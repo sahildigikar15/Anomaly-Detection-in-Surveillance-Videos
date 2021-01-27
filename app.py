@@ -4,7 +4,7 @@ import os
 
 app = Flask(__name__)
 
-@app.route("/")
+@app.route("/",methods = ['GET','POST'])
 def homePage():
     return render_template('index.html')
 
