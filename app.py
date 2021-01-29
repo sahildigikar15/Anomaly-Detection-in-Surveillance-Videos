@@ -3,10 +3,12 @@ import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import secure_filename
+from PIL import Image
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/final_year_project'
-app.config['UPLOAD_FOLDER'] = "static\\uploader"
+app.config['UPLOAD_FOLDER'] = "static\\uploader\\"
+app.config["IMAGE_UPLOADS"] = "static\\img_converted\\"
 db = SQLAlchemy(app)
 app.secret_key = os.urandom(24)
 
@@ -103,12 +105,16 @@ def user_dashboard():
 
 @app.route('/uploader')
 def upload_form():
-    return render_template('multifiles.html')
+    if g.user:
+        user = session['user']
+        return render_template('multifiles.html',user = user)
+
 
 
 @app.route("/uploader", methods=['POST'])
 def uploader():
     if g.user:
+        user = session['user']
         if 'files[]' not in request.files:
             flash('No file part')
             return render_template(request.url)
@@ -117,11 +123,27 @@ def uploader():
         for f in filelist:
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
 
+        # filelist = [f for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
+        # for f in filelist:
+        #     os.remove(os.path.join(app.config["IMAGE_UPLOADS"], f))
+
+
         files = request.files.getlist('files[]')
         for file in files:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+        # for infile in os.listdir(app.config['UPLOAD_FOLDER']):
+        #     if infile[-3:] == "tif" or infile[-3:] == "bmp":
+        #         outfile = infile[:-3] + "jpeg"
+        #         im = Image.open(app.config['UPLOAD_FOLDER'] + infile)
+        #         out = im.convert("RGB")
+        #         save_path = app.config["IMAGE_UPLOADS"] + outfile
+        #         out.save(save_path, "JPEG", quality=90)
+
         flash('File(s) successfully uploaded')
+        # filelist = [app.config["IMAGE_UPLOADS"]+ f for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
+        # print(filelist)
         return redirect('/uploader')
 
 
