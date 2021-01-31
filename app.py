@@ -7,8 +7,10 @@ from PIL import Image
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/final_year_project'
-app.config['UPLOAD_FOLDER'] = "static\\uploader\\"
-app.config["IMAGE_UPLOADS"] = "static\\img_converted\\"
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploader')
+   # "static\\uploader\\"
+app.config["IMAGE_UPLOADS"] = os.path.join('static', 'img_converted')
+   # "static\\img_converted\\"
 db = SQLAlchemy(app)
 app.secret_key = os.urandom(24)
 
@@ -111,6 +113,7 @@ def upload_form():
 
 
 
+
 @app.route("/uploader", methods=['POST'])
 def uploader():
     if g.user:
@@ -123,9 +126,9 @@ def uploader():
         for f in filelist:
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], f))
 
-        # filelist = [f for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
-        # for f in filelist:
-        #     os.remove(os.path.join(app.config["IMAGE_UPLOADS"], f))
+        filelist = [f for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
+        for f in filelist:
+            os.remove(os.path.join(app.config["IMAGE_UPLOADS"], f))
 
 
         files = request.files.getlist('files[]')
@@ -133,18 +136,21 @@ def uploader():
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        # for infile in os.listdir(app.config['UPLOAD_FOLDER']):
-        #     if infile[-3:] == "tif" or infile[-3:] == "bmp":
-        #         outfile = infile[:-3] + "jpeg"
-        #         im = Image.open(app.config['UPLOAD_FOLDER'] + infile)
-        #         out = im.convert("RGB")
-        #         save_path = app.config["IMAGE_UPLOADS"] + outfile
-        #         out.save(save_path, "JPEG", quality=90)
+        for infile in os.listdir(app.config['UPLOAD_FOLDER']):
+            if infile[-3:] == "tif" or infile[-3:] == "bmp":
+                outfile = infile[:-3] + "jpeg"
+                im = Image.open(os.path.join(app.config['UPLOAD_FOLDER'], infile))
+                    #app.config['UPLOAD_FOLDER'] + infile)
+                out = im.convert("RGB")
+                save_path = os.path.join(app.config['IMAGE_UPLOADS'],outfile )
+                   # app.config["IMAGE_UPLOADS"] + outfile
+                out.save(save_path, "JPEG", quality=90)
+
 
         flash('File(s) successfully uploaded')
-        # filelist = [app.config["IMAGE_UPLOADS"]+ f for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
-        # print(filelist)
-        return redirect('/uploader')
+        filelist = [os.path.join(app.config['IMAGE_UPLOADS'], f) for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
+        print(filelist)
+        return render_template('multifiles.html',user = user,data= filelist)
 
 
 app.run(port=8181, debug=True)
