@@ -7,26 +7,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <style>
-div.gallery {
-  margin: 5px;
-  border: 1px solid #ccc;
-  float: left;
-  width: 180px;
-}
 
-div.gallery:hover {
-  border: 1px solid #777;
-}
-
-div.gallery img {
-  width: 100%;
-  height: auto;
-}
-
-div.desc {
-  padding: 15px;
-  text-align: center;
-}
 body {
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
@@ -46,61 +27,20 @@ body {
   height: 100%;
 }
 
+
 </style>
   </head>
   <body>
 
 
-    <div id="wrapper">
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="container">
-                    <div id="identitycard" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                        <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <div class="panel-title">Select file(s) to upload</div>
-                            </div>
-                            <div class="panel-body">
-    <p>
-     {% with messages = get_flashed_messages() %}
-       {% if messages %}
-      {% for message in messages %}
-        <div class="alert alert-success">
-         <strong>{{ message }}</strong>
-       </div>
-      {% endfor %}
-       {% endif %}
-     {% endwith %}
-    </p>
-                                <div class="row">
-                                    <strong><p style="padding: 8px;" class="text-center">Select Video Frames to upload</p></strong>
-                                </div>
-                                <div class="row" style="padding: 10px 15px 9px;">
-                                    <form method="post" action="/uploader" enctype="multipart/form-data">
-                                        <div class="form-group">
-                                            <div class="row" style="margin-bottom: 20px;">
-                                                <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-2">
-                                                    <input type="file" name="files[]" multiple="true" autocomplete="off" required>
-                                                </div>
-                                            </div>
-                                            <div class="row text-center" style="padding-left: 20px;padding-right: 20px;">
-         <input type="submit" value="Upload" class="btn btn-lg btn-block btn-success" style="border-radius: 50px;background-color:hover: #35832f;">
-        </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </div>
-</div>
+
+
+
 {% if data is defined %}
 
 <div class="container">
 
-  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Uploaded Images</h1>
+  <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0" style="color:#fff;" >Uploaded Images</h1>
   <div class="anc">
     <a href="#"  class="btn btn-info" role="button">Find Anomalies</a>
   </div>
@@ -112,7 +52,7 @@ body {
 
 {%for row in data%}
 <div class="col-lg-3 col-md-4 col-6">
-  <a href="#" class="d-block mb-4 h-100">
+  <a href="{{row}}" class="d-block mb-4 h-100">
         <img class="img-fluid img-thumbnail" src="{{row}}" alt="">
       </a>
 </div>
@@ -121,7 +61,54 @@ body {
 </div>
 </div>
 
+{% else %}
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="container">
+                <div id="identitycard" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <div class="panel-title">Select file(s) to upload</div>
+                        </div>
+                        <div class="panel-body">
+<!-- <p>
+ {% with messages = get_flashed_messages() %}
+   {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success">
+     <strong>{{ message }}</strong>
+   </div>
+  {% endfor %}
+   {% endif %}
+ {% endwith %}
+</p> -->
+                            <div class="row">
+                                <strong><p style="padding: 8px;" class="text-center" >Select Video Frames to upload</p></strong>
+                            </div>
+                            <div class="row" style="padding: 10px 15px 9px;">
+                                <form method="post" action="/uploader" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <div class="row" style="margin-bottom: 20px;">
+                                            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-md-offset-3 col-sm-offset-3 col-xs-offset-2">
+                                                <input type="file" name="files[]" multiple="true" autocomplete="off" required>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center" style="padding-left: 20px;padding-right: 20px;">
+     <input type="submit" value="Upload" class="btn btn-lg btn-block btn-success" style="border-radius: 50px;background-color:hover: #35832f;">
+    </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
 {% endif %}
+
 
   </body>
 </html>
