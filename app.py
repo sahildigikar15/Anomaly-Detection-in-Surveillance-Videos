@@ -3,15 +3,21 @@ import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import secure_filename
+from flask_mysqldb import MySQL
 from PIL import Image
+import yaml
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/final_year_project'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/final_year_project'
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql6412824:1ZjNmP9LIy@sql6.freemysqlhosting.net/sql6412824'
+
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploader')
    # "static\\uploader\\"
 app.config["IMAGE_UPLOADS"] = os.path.join('static', 'img_converted')
    # "static\\img_converted\\"
 db = SQLAlchemy(app)
+
 app.secret_key = os.urandom(24)
 
 
@@ -152,5 +158,18 @@ def uploader():
         print(filelist)
         return render_template('multifiles.html',user = user,data= filelist)
 
+@app.route('/stores')
+def store_locate():
+    if g.user:
+        user = session['user']
+        return render_template('index_map.html',user = user)
+
+@app.route('/detect_anomalies')
+def find_anomaly():
+    if g.user:
+        user = session['user']
+
+
+        return render_template('index_map.html',user = user)
 
 app.run(port=8181, debug=True)
