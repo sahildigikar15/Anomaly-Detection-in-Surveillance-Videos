@@ -1,10 +1,15 @@
+import glob
+import numpy as np
 from flask import Flask, render_template, request, redirect, session, url_for, g, flash
 import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import secure_filename
-
+import mxnet as mx
+from mxnet import gluon
 from PIL import Image
+import ml
+
 
 
 app = Flask(__name__)
@@ -15,6 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql6412824:1ZjNmP9LIy@sql6.free
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploader')
 
 app.config["IMAGE_UPLOADS"] = os.path.join('static', 'img_converted')
+app.config["PRED_IMAGE"] = os.path.join('static', 'predicted_image')
 
 db = SQLAlchemy(app)
 
@@ -169,7 +175,31 @@ def find_anomaly():
     if g.user:
         user = session['user']
 
+        test_file = sorted(glob.glob(os.path.join('static', 'uploader/*')))
+        a = np.zeros((len(test_file), 2, 100, 100))
+        for idx, filename in enumerate(test_file):
+            im = Image.open(filename)
+            im = im.resize((100, 100))
+            a[idx, 0, :, :] = np.array(im, dtype=np.float32) / 255.0
 
-        return render_template('index_map.html',user = user)
+        dataset = gluon.data.ArrayDataset(mx.nd.array(a, dtype=np.float32))
+        dataloader = gluon.data.DataLoader(dataset, batch_size=1)
+
+        print("Done Reading and preprocessing")
+
+        model = ml.ConvolutionalAutoencoder()
+        model.load_parameters(os.path.join('static', 'autoencoder_ucsd.params'))
+        reg_scores_cae = ml.plot_regularity_score(model, dataloader)
+
+        print("Done loading params")
+
+        ml.model_evaluation(model,dataloader)
+        print("Done Predicting")
+
+        print("Loading Data")
+        filelist = [os.path.join(app.config['PRED_IMAGE'], f) for f in os.listdir(app.config["PRED_IMAGE"]) if f.endswith(".png")]
+
+
+        return render_template('predicted_images.html',user = user,data= filelist)
 
 app.run(port=8181, debug=True)
