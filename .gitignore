@@ -1,5 +1,1 @@
-venv
-static/uploader
-static/img_converted
-_pychache_
-.idea
+static/autoencoder_ucsd.params
