@@ -1,4 +1,6 @@
 import glob
+
+import cv2
 import numpy as np
 from flask import Flask, render_template, request, redirect, session, url_for, g, flash
 import os
@@ -21,6 +23,7 @@ app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploader')
 
 app.config["IMAGE_UPLOADS"] = os.path.join('static', 'img_converted')
 app.config["PRED_IMAGE"] = os.path.join('static', 'predicted_image')
+app.config["fin_vid"] = os.path.join('static', 'final_video1')
 
 db = SQLAlchemy(app)
 
@@ -131,7 +134,7 @@ def uploader():
     if g.user:
         user = session['user']
         if 'files[]' not in request.files:
-            flash('No file part')
+        #flash('No file part')
             return render_template(request.url)
 
         filelist = [f for f in os.listdir(app.config['UPLOAD_FOLDER']) if f.endswith(".tif")]
@@ -159,7 +162,7 @@ def uploader():
                 out.save(save_path, "JPEG", quality=90)
 
 
-        flash('File(s) successfully uploaded')
+
         filelist = [os.path.join(app.config['IMAGE_UPLOADS'], f) for f in os.listdir(app.config["IMAGE_UPLOADS"]) if f.endswith(".jpeg")]
         print(filelist)
         return render_template('multifiles.html',user = user,data= filelist)
@@ -170,11 +173,12 @@ def store_locate():
         user = session['user']
         return render_template('index_map.html',user = user)
 
+
 @app.route('/detect_anomalies')
 def find_anomaly():
     if g.user:
         user = session['user']
-
+        print("1] Reading Data and Preprocessing. 2] Loading the Model. 3] Predicting ")
         test_file = sorted(glob.glob(os.path.join('static', 'uploader/*')))
         a = np.zeros((len(test_file), 2, 100, 100))
         for idx, filename in enumerate(test_file):
@@ -193,13 +197,41 @@ def find_anomaly():
 
         print("Done loading params")
 
-        ml.model_evaluation(model,dataloader)
-        print("Done Predicting")
+        filelist = [f for f in os.listdir(app.config['PRED_IMAGE']) if f.endswith(".png")]
+        for f in filelist:
+            os.remove(os.path.join(app.config['PRED_IMAGE'], f))
 
-        print("Loading Data")
+
+        ml.model_evaluation(model,dataloader)
+        print("Done Predicting and now showing predicted frames !!")
+
+
+
         filelist = [os.path.join(app.config['PRED_IMAGE'], f) for f in os.listdir(app.config["PRED_IMAGE"]) if f.endswith(".png")]
 
 
         return render_template('predicted_images.html',user = user,data= filelist)
+
+
+@app.route('/convert_video')
+def convert_video():
+    if g.user:
+        user = session['user']
+        if os.path.exists(os.path.join(app.config["fin_vid"] , 'project.mp4')):
+            os.remove(os.path.join(app.config["fin_vid"], 'project.mp4'))
+
+        img_array = []
+        for filename in sorted(glob.glob(os.path.join('static', 'predicted_image/*'))):
+            img = cv2.imread(filename)
+            height, width, layers = img.shape
+            size = (width, height)
+            img_array.append(img)
+
+        out = cv2.VideoWriter('static/final_video1/project.mp4', cv2.VideoWriter_fourcc(*'webm'), 15, size)
+
+        for i in range(len(img_array)):
+            out.write(img_array[i])
+        out.release()
+        return render_template('final_video.html', user=user)
 
 app.run(port=8181, debug=True)

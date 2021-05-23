@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <title> Video </title>
+    <link rel="stylesheet" href="{{url_for('static',filename='final_video/style.css')}}">
+
+
+
+
+
+<!--    <meta charset="utf-8">-->
+<!--    <meta name="viewport"-->
+<!--          content="width=device-width,-->
+<!--                   initial-scale=1">-->
+<!--    <link rel="stylesheet"-->
+<!--          href=-->
+<!--"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">-->
+
+<!--    <script src=-->
+<!--"https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js">-->
+<!--    </script>-->
+
+<!--    <script src=-->
+<!--"https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js">-->
+<!--    </script>-->
+</head>
+
+
+
+
+
+
+</head>
+
+<body>
+<a href="{{url_for('home')}}">
+    <div class="logo">
+
+     <h1>SMART</h1></h2> SECURITY</h2>
+
+
+
+<!--        <a href="{{url_for('home')}}" class="navbar-brand scroll-top"><em>Smart</em>Security</a>-->
+    </div>
+
+</a>
+
+
+
+
+
+
+<!--     <div class="container">-->
+<!--        <section>-->
+<!--&lt;!&ndash;            <div class="page-header">&ndash;&gt;-->
+
+<!--                <div class="pull-right">-->
+<!--                    <div class="btn-group">-->
+<!--                        <button class="btn btn-success">-->
+<!--                            Menu-->
+<!--                        </button>-->
+<!--                        <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">-->
+<!--                            <span class="caret"></span>-->
+<!--                        </button>-->
+<!--                        <ul class="dropdown-menu pull-right">-->
+<!--                            <li>-->
+<!--                                <a href="#">Home</a>-->
+<!--                            </li>-->
+<!--                            <li>-->
+<!--                                <a href="#">Logout</a>-->
+<!--                            </li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="clearfix"></div>-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        </section>-->
+<!--    </div>-->
+
+
+
+
+
+
+
+
+    <div class="container">
+        <h1> Video Analytics </h1>
+        <div class="row">
+            <div class="col">
+                <div class="feature-img">
+                    <video class="video-fluid z-depth-1" autoplay loop controls muted id="vid">
+                        <source src="{{url_for('static',filename='final_video1/project.mp4')}}" type="video/mp4" />
+                    </video>
+
+                    <h2>Detected Anomalies</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

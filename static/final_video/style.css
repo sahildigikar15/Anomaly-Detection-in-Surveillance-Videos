@@ -1,0 +1,64 @@
+*{
+  margin: 0;
+  padding: 0;
+
+}
+
+h2{
+  align-content: center;
+}
+
+body{
+  background-image: linear-gradient(black, rgb(68, 66, 66), black);
+}
+.logo{
+  color:white;
+  position:absolute;
+  margin:2%;
+  clear: both;
+}
+.logo h1{
+  color:orange;
+}
+.logo h2{
+  float:right;
+}
+.container h1{
+  padding: 2%;
+  font-size: 55px;
+  text-align: center;
+  background: -webkit-linear-gradient(#eee, #333);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.row{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  
+}
+
+.col{
+  flex-basis: 100%;
+}
+
+.feature-img{
+  overflow: hidden;
+  color: white;
+  opacity: 80%;
+  padding-left: 2%;
+  padding-right: 2%;
+}
+
+.feature-img h2{
+  text-align: center;
+  background: -webkit-linear-gradient(rgb(243, 241, 241), rgb(184, 178, 178));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+.video-fluid {
+  width: 100%;
+  border-radius: 8px;
+}
