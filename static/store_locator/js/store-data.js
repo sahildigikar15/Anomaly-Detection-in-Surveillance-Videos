@@ -26,7 +26,7 @@ stores =[
         "windowsTimeZoneId": "Indian Standard Time",
         "olsonTimeZoneId": ""
     },
-    "brandName": "Xchange",
+    "brandName": "Electronics On Demand",
 
 
     "openStatusText": "Open until 6:00 PM",
@@ -41,7 +41,7 @@ stores =[
 
     "storeNumber": "5577-1851",
     "id": "14753",
-    "name": "Fairforex & Olympic",
+    "name": "Cameras for life",
     "phoneNumber": "91-855-508-0076",
     "coordinates": {
         "latitude": 18.530823,
@@ -74,7 +74,7 @@ stores =[
 
     "storeNumber": "75244-90562",
     "id": "9620",
-    "name": "Money Exchange",
+    "name": "Morgean Stores",
     "phoneNumber": "+91-755-584-3385",
     "coordinates": {
         "latitude": 18.5074,
@@ -94,7 +94,7 @@ stores =[
         "windowsTimeZoneId": "Indian Standard Time",
         "olsonTimeZoneId": ""
     },
-    "brandName": "Money Exchange",
+    "brandName": "Smart Cameras",
 
     "openStatusText": "Open until 5:00 PM",
     "addressLines": ["MIT College Road Kothrud", "Pune, IN"],
@@ -107,7 +107,7 @@ stores =[
 
     "storeNumber": "22415-184968",
     "id": "1006844",
-    "name": "ForexMart",
+    "name": "Smart Cameras",
     "phoneNumber": "+91-855-530-2521",
     "coordinates": {
         "latitude": 18.4682,
@@ -142,7 +142,7 @@ stores =[
 
    "storeNumber": "5871-30359",
    "id": "15639",
-   "name": "Beverly & Robertson",
+   "name": "Tree Stores",
    "phoneNumber": "310-659-7370",
    "coordinates": {
        "latitude": 19.0596,

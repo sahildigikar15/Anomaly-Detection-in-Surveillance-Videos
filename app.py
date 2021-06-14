@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, session, url_for, g
 import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug.utils import secure_filename
+from werkzeug import secure_filename
 import mxnet as mx
 from mxnet import gluon
 from PIL import Image
