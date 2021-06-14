@@ -6,18 +6,21 @@ from flask import Flask, render_template, request, redirect, session, url_for, g
 import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from werkzeug import secure_filename
+from werkzeug.utils import secure_filename
 import mxnet as mx
 from mxnet import gluon
 from PIL import Image
 import ml
+from OpenSSL import SSL
+
+
 
 
 
 app = Flask(__name__)
 
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql6412824:1ZjNmP9LIy@sql6.freemysqlhosting.net/sql6412824'
+print(SSL._CERTIFICATE_PATH_LOCATIONS)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql6417608:IIXXNwx4Lu@sql6.freemysqlhosting.net/sql6417608'
 
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploader')
 
